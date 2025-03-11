@@ -4,8 +4,8 @@ import {
   Get,
   Param,
   Post,
-  Query,
-  Render,
+  Put,
+  Delete,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 
@@ -19,6 +19,7 @@ export interface ProductParams {
 @Controller('products')
 export class ProductsController {
   constructor(private productService: ProductsService) {}
+
   @Get('')
   async index() {
     const products = await this.productService.getAll();
@@ -34,6 +35,18 @@ export class ProductsController {
   @Post('/')
   async create(@Body() body: ProductParams) {
     const product = await this.productService.createProduct(body);
-    return { message: 'Data', data: product };
+    return { message: 'Product created', data: product };
+  }
+
+  @Put('/:id')
+  async update(@Param('id') id: number, @Body() body: ProductParams) {
+    const updatedProduct = await this.productService.updateProduct(id, body);
+    return { message: 'Product updated', data: updatedProduct };
+  }
+
+  @Delete('/:id')
+  async delete(@Param('id') id: number) {
+    await this.productService.deleteProduct(id);
+    return { message: 'Product deleted' };
   }
 }
