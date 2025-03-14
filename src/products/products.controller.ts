@@ -8,6 +8,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
+import { CategoryService } from 'src/category/category.service';
 
 export interface ProductParams {
   name: string;
@@ -18,7 +19,10 @@ export interface ProductParams {
 
 @Controller('products')
 export class ProductsController {
-  constructor(private productService: ProductsService) {}
+  constructor(
+    private productService: ProductsService,
+    private categoryService: CategoryService,
+  ) {}
 
   @Get('')
   async index() {
